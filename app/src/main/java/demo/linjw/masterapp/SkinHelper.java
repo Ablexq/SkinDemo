@@ -5,7 +5,9 @@ import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -20,9 +22,12 @@ public class SkinHelper {
 
     public SkinHelper(Context context, String skinApkPackage) {
         mSkinApkPackage = skinApkPackage;
-
         mResources = getResourcesByContext(context, skinApkPackage);
-//        mResources = getResourcesByAssetManager(context, getSkinApkPath(context, skinApkPackage));
+    }
+
+    public SkinHelper(Context context, String skinApkPackage, File skinApk) {
+        mSkinApkPackage = skinApkPackage;
+        mResources = getResourcesByAssetManager(context, skinApk.getPath());
     }
 
     /**
@@ -67,23 +72,6 @@ public class SkinHelper {
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * 获取已安装应用的位置
-     *
-     * @param context
-     * @param skinPackage
-     * @return
-     */
-    private String getSkinApkPath(Context context, String skinPackage) {
-        PackageManager pm = context.getPackageManager();
-        try {
-            return pm.getApplicationInfo(skinPackage, 0).sourceDir;
-        } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
         return null;
